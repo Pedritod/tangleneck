@@ -92,7 +92,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     private Mono<Void> sendEmail(String email, String id) {
-        String uri = "http://localhost:8080/tangleneck/v1/confirmation?code=" + id;
+        String uri = "https://dashboard.heroku.com/apps/lit-ravine-74924/tangleneck/v1/confirmation?code=" + id;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Tangleneck - Email confirmation");
