@@ -1,4 +1,4 @@
-package com.tangleneck.exchange.model;
+package com.tangleneck.exchange.model.response;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;

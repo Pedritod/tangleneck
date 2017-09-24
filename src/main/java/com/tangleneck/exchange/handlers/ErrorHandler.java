@@ -1,7 +1,7 @@
 package com.tangleneck.exchange.handlers;
 
 import com.tangleneck.exchange.exceptions.PathNotFoundException;
-import com.tangleneck.exchange.model.ErrorResponse;
+import com.tangleneck.exchange.model.response.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

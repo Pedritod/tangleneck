@@ -19,8 +19,9 @@ public class ApiRouter {
 
     private static final String API_PATH = "/tangleneck";
     private static final String LOCATION_PATH = "/v1";
-    private static final String ADDRESS_ARG = "/register";
-    private static final String LOCATION_WITH_ADDRESS_PATH = LOCATION_PATH + ADDRESS_ARG;
+    private static final String REGISTER_PATH = "/register";
+    private static final String CONFIRMATION_PATH = "/confirmation";
+    private static final String LOGIN_PATH = "/login";
 
     @Autowired
     private ApiHandler apiHandler;
@@ -31,10 +32,11 @@ public class ApiRouter {
     public RouterFunction<?> doRoute() {
         return
                 nest(path(API_PATH),
-                    nest(accept(APPLICATION_JSON),
-                        route(POST(LOCATION_WITH_ADDRESS_PATH), apiHandler::register)
-                            .andOther(route(GET(LOCATION_WITH_ADDRESS_PATH), apiHandler::register))
-                    ).andOther(route(RequestPredicates.all(), errorHandler::notFound))
+                        nest(accept(APPLICATION_JSON),
+                                route(POST(LOCATION_PATH + REGISTER_PATH), apiHandler::register)
+                                        .andOther(route(GET(LOCATION_PATH + CONFIRMATION_PATH), apiHandler::confirmation))
+                                        .andOther(route(POST(LOCATION_PATH + LOGIN_PATH), apiHandler::login))
+                        ).andOther(route(RequestPredicates.all(), errorHandler::notFound))
                 );
     }
 }
