@@ -1,5 +1,6 @@
 package com.tangleneck.exchange.services;
 
+import com.sendgrid.*;
 import com.tangleneck.exchange.data.Customer;
 import com.tangleneck.exchange.model.request.RegistrationRequest;
 import com.tangleneck.exchange.model.response.LoginResponse;
@@ -12,11 +13,10 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -26,8 +26,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     private CustomerRepository repository;
 
+    /*
     @Autowired
     private JavaMailSender emailSender;
+    */
 
     @Autowired
     private ReactiveMongoTemplate reactiveMongoTemplate;
@@ -92,13 +94,34 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     private Mono<Void> sendEmail(String email, String id) {
+        SendGrid sendgrid = new SendGrid("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");
+        Email from = new Email("tangleneck@iota.com");
+
         String uri = "https://dashboard.heroku.com/apps/lit-ravine-74924/tangleneck/v1/confirmation?code=" + id;
+        String subject = "Tangleneck - Email confirmation";
+        Email to = new Email("pedrocolomina@gmail.com");
+        Content content = new Content("text/plain", "Hello, Thanks for registering to Tangleneck. \n"+
+                "To activate your account, click on the following link: \n "+ uri +")");
+        Mail mail = new Mail(from, subject, to, content);
+        Request request = new Request();
+        request.setMethod(Method.POST);
+        request.setEndpoint("mail/send");
+        try {
+            request.setBody(mail.build());
+            sendgrid.api(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("pepito@gmail.com");
         message.setTo(email);
         message.setSubject("Tangleneck - Email confirmation");
         message.setText("Hello, Thanks for registering to Tangleneck. \n" +
                 "To activate your account, click on the following link: \n" + uri);
         emailSender.send(message);
+       */
         return Mono.empty();
     }
 }
