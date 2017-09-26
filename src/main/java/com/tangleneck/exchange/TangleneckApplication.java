@@ -2,6 +2,7 @@ package com.tangleneck.exchange;
 
 import com.tangleneck.exchange.routers.ApiRouter;
 import com.tangleneck.exchange.routers.StaticRouter;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 @ComponentScan
 @EnableWebFlux
 @EnableAutoConfiguration
+@EnableEncryptableProperties
 public class TangleneckApplication  {
 	public static void main(String[] args) {
 		SpringApplication.run(TangleneckApplication.class, args);
